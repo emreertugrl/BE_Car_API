@@ -1,5 +1,6 @@
 const express = require("express");
 const { logger } = require("./middleware");
+const idControl = require("./middleware/idControl");
 const {
   getAllCars,
   getCar,
@@ -21,7 +22,12 @@ app.use(express.json());
 // route/endpoint'leri tanımlanır.
 // endpointleri tanımlarken ikinci yöntem aynı url ise gruplanabilir.
 app.route("/api/v1/cars").get(getAllCars).post(createCar);
-app.route("/api/v1/cars/:id").get(getCar).patch(updateCar).delete(deleteCar);
+
+app
+  .route("/api/v1/cars/:id")
+  .get(idControl, getCar)
+  .patch(idControl, updateCar)
+  .delete(idControl, deleteCar);
 
 // dinlenecek portu belirle
 app.listen(port, () => {
