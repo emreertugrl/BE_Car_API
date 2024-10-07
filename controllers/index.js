@@ -52,7 +52,27 @@ exports.deleteCar = (req, res) => {
 
 // bir aracı güncelle
 exports.updateCar = (req, res) => {
+  // isteğin body kısmındaki güncellenecek değerleri al
+  const updatedData = req.body;
+
+  // console.log(req.car);
+  // console.log(updatedData);
+
+  // aracın güncel değerlerine sahip yeni bir nesne oluştur
+  const updatedCar = { ...req.car, ...updatedData };
+
+  // dizide güncellenecek olan elemanın sırasını bul
+  const index = cars.findIndex((car) => car.id === updatedCar.id);
+
+  // dizideki eski aracın yerine yeni aracı koy
+  cars.splice(index, 1, updatedCar);
+
+  // json dosyasını günceller
+  write(cars);
+
+  // client'a cevap gönder
   res.status(201).json({
     message: "Araç Güncellendi.",
+    car: updatedCar,
   });
 };

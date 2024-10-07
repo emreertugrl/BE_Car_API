@@ -12,7 +12,7 @@ const {
 // express'ı kurulum ve portunu belirle
 const app = express();
 const port = 3000;
-
+const carRoutes = require("./routes/carRoutes");
 // middleware (ara yazılım)
 // logger middleware istekleri consola yazdırır.
 app.use(logger);
@@ -20,15 +20,8 @@ app.use(logger);
 app.use(express.json());
 
 // route/endpoint'leri tanımlanır.
-// endpointleri tanımlarken ikinci yöntem aynı url ise gruplanabilir.
-app.route("/api/v1/cars").get(getAllCars).post(createCar);
 
-app
-  .route("/api/v1/cars/:id")
-  .get(idControl, getCar)
-  .patch(idControl, updateCar)
-  .delete(idControl, deleteCar);
-
+app.use(carRoutes);
 // dinlenecek portu belirle
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
